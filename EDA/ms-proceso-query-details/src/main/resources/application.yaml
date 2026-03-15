@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: ms-proceso-query-details
+
+  # MongoDB
+  data:
+    mongodb:
+      database: ms-reporte-procesos
+      username: root
+      password: example
+      host: 192.168.18.186
+      port: 27017
+      authentication-database: admin
+      auto-index-creation: true
+#      write-concern: NORMAL
+#      replica-set: replica_set_one
+
+
+server:
+  port: 8084

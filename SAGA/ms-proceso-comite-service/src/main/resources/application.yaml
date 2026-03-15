@@ -1,0 +1,61 @@
+spring:
+  application:
+    name: ms-proceso-comite-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/api-proceso?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: "A12345$"
+
+  rabbitmq:
+    host: 192.168.18.39
+    port: 5672
+    username: guest
+    password: guest
+
+  amqp:
+    deserialization:
+      trust:
+        all: true
+
+  # MongoDB
+  data:
+    mongodb:
+      database: ms-reporte-procesos
+      username: root
+      password: example
+      host: 192.168.18.39
+      port: 27017
+      authentication-database: admin
+      auto-index-creation: true
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+
+server:
+  port: 8086
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+
+springdoc:
+  api-docs:
+    enable: true
+    path: /api/docs
+  swagger-ui:
+    enable: true
+    path: /swagger-ui.html
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      health:
+        show-details: always

@@ -1,0 +1,85 @@
+package reclutamiento.app.api_proceso.command.config;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+
+@Configuration
+public class RabbitMQConfig {
+
+    @Value("${spring.rabbitmq.host}")
+    private String host;
+
+    @Value("${spring.rabbitmq.port}")
+    private int port;
+
+    @Value("${spring.rabbitmq.username}")
+    private String username;
+
+    @Value("${spring.rabbitmq.password}")
+    private String password;
+
+    public static final String EXCHANGE = "saga.exchange";
+
+    @Bean
+    ConnectionFactory connectionFactory() {
+        CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
+        connectionFactory.setHost(host);
+        connectionFactory.setPort(port);
+        connectionFactory.setUsername(username);
+        connectionFactory.setPassword(password);
+        return connectionFactory;
+    }
+
+    @Bean
+    RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
+        final var rabbitTemplate = new RabbitTemplate(connectionFactory);
+        rabbitTemplate.setMessageConverter(producerJackson2MessageConverter());
+        return rabbitTemplate;
+    }
+
+    @Bean
+    Jackson2JsonMessageConverter producerJackson2MessageConverter() {
+        return new Jackson2JsonMessageConverter();
+    }
+
+    @Bean
+    public TopicExchange sagaExchange() {
+        return new TopicExchange(EXCHANGE);
+    }
+
+    @Bean
+    public Queue createProcesoQueue() {
+        return new Queue("proceso.create.queue");
+    }
+
+    @Bean
+    public Queue deleteProcesoQueue() {
+        return new Queue("proceso.delete.queue");
+    }
+
+    @Bean
+    public Binding bindCreateProcesoQueue() {
+        return BindingBuilder
+                .bind(createProcesoQueue())
+                .to(sagaExchange())
+                .with("proceso.create");
+    }
+
+    @Bean
+    public Binding bindDeleteProcesoQueue() {
+        return BindingBuilder
+                .bind(deleteProcesoQueue())
+                .to(sagaExchange())
+                .with("proceso.delete");
+    }
+
+}
