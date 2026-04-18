@@ -1,0 +1,592 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: var(--color-background-primary);
+    --bg2: var(--color-background-secondary);
+    --border: var(--color-border-tertiary);
+    --text: var(--color-text-primary);
+    --muted: var(--color-text-secondary);
+    --blue-fill: #E6F1FB;
+    --blue-mid: #378ADD;
+    --blue-dark: #0C447C;
+    --teal-fill: #E1F5EE;
+    --teal-mid: #1D9E75;
+    --teal-dark: #085041;
+    --amber-fill: #FAEEDA;
+    --amber-mid: #BA7517;
+    --amber-dark: #633806;
+    --purple-fill: #EEEDFE;
+    --purple-mid: #7F77DD;
+    --purple-dark: #3C3489;
+    --coral-fill: #FAECE7;
+    --coral-mid: #D85A30;
+    --coral-dark: #712B13;
+    --green-fill: #EAF3DE;
+    --green-mid: #639922;
+    --green-dark: #27500A;
+    --gray-fill: #F1EFE8;
+    --gray-mid: #888780;
+    --gray-dark: #444441;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --blue-fill: #0C447C;
+      --blue-mid: #85B7EB;
+      --blue-dark: #B5D4F4;
+      --teal-fill: #085041;
+      --teal-mid: #5DCAA5;
+      --teal-dark: #9FE1CB;
+      --amber-fill: #633806;
+      --amber-mid: #EF9F27;
+      --amber-dark: #FAC775;
+      --purple-fill: #3C3489;
+      --purple-mid: #AFA9EC;
+      --purple-dark: #CECBF6;
+      --coral-fill: #712B13;
+      --coral-mid: #F0997B;
+      --coral-dark: #F5C4B3;
+      --green-fill: #27500A;
+      --green-mid: #97C459;
+      --green-dark: #C0DD97;
+      --gray-fill: #444441;
+      --gray-mid: #B4B2A9;
+      --gray-dark: #D3D1C7;
+    }
+  }
+
+  body { background: transparent; font-family: 'DM Sans', sans-serif; color: var(--text); padding-left: 1rem; }
+
+  /* ── Header ── */
+  .hero {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 32px 24px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .hero-title { font-size: 22px; font-weight: 500; color: var(--text); line-height: 1.3; }
+  .hero-sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .tech-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+  .pill {
+    font-size: 11px; font-weight: 500; padding: 3px 10px;
+    border-radius: 20px; border: 0.5px solid;
+    letter-spacing: 0.02em;
+  }
+  .pill-blue   { background: var(--blue-fill);   color: var(--blue-dark);   border-color: var(--blue-mid); }
+  .pill-teal   { background: var(--teal-fill);   color: var(--teal-dark);   border-color: var(--teal-mid); }
+  .pill-amber  { background: var(--amber-fill);  color: var(--amber-dark);  border-color: var(--amber-mid); }
+  .pill-purple { background: var(--purple-fill); color: var(--purple-dark); border-color: var(--purple-mid); }
+  .pill-coral  { background: var(--coral-fill);  color: var(--coral-dark);  border-color: var(--coral-mid); }
+
+  /* ── Status legend ── */
+  .legend {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    padding: 10px 16px;
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  /* ── Flow diagram ── */
+  .flow-wrap { margin-bottom: 20px; }
+  .flow-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin-bottom: 4px;
+    position: relative;
+  }
+
+  .step-card {
+    flex: 1;
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 14px 12px;
+    background: var(--bg);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    position: relative;
+  }
+  .step-card:hover { border-color: var(--blue-mid); background: var(--bg2); }
+  .step-card.active { border-color: var(--blue-mid); box-shadow: 0 0 0 2px color-mix(in srgb, var(--blue-mid) 20%, transparent); }
+
+  .step-num {
+    font-size: 10px; font-weight: 500; letter-spacing: 0.06em;
+    color: var(--muted); margin-bottom: 6px; display: block;
+  }
+  .step-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.3; }
+  .step-sub   { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+
+  .step-badge {
+    position: absolute; top: 10px; right: 10px;
+    font-size: 10px; font-weight: 500; padding: 2px 7px;
+    border-radius: 20px; border: 0.5px solid;
+  }
+
+  /* ── Arrow ── */
+  .arrow-v {
+    display: flex; justify-content: center; align-items: center;
+    height: 24px; color: var(--muted); font-size: 12px;
+  }
+  .arrow-h {
+    display: flex; align-items: center; padding: 0 4px;
+    color: var(--muted); font-size: 12px; flex-shrink: 0;
+  }
+
+  /* ── Queue rows ── */
+  .queue-row {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    margin: 6px 0 16px; padding: 10px 14px;
+    background: var(--amber-fill);
+    border: 0.5px solid var(--amber-mid);
+    border-radius: 8px;
+    align-items: center;
+  }
+  .queue-label { font-size: 11px; font-weight: 500; color: var(--amber-dark); }
+  .queue-name  {
+    font-size: 10px; font-family: 'DM Mono', monospace;
+    padding: 2px 8px; border-radius: 4px;
+    background: var(--bg); border: 0.5px solid var(--amber-mid);
+    color: var(--amber-dark);
+  }
+  .queue-arrow { font-size: 10px; color: var(--amber-mid); }
+
+  /* ── Service grid ── */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .service-card {
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 14px 12px;
+    background: var(--bg);
+  }
+  .service-icon { font-size: 20px; margin-bottom: 8px; display: block; }
+  .service-name { font-size: 12px; font-weight: 500; color: var(--text); }
+  .service-port { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--muted); margin-top: 2px; }
+  .service-dbs  { display: flex; gap: 4px; margin-top: 8px; flex-wrap: wrap; }
+
+  /* ── States ── */
+  .states-row {
+    display: flex; gap: 0; margin-bottom: 20px;
+    border: 0.5px solid var(--border); border-radius: 12px; overflow: hidden;
+  }
+  .state-block {
+    flex: 1; text-align: center; padding: 10px 6px;
+    border-right: 0.5px solid var(--border);
+    font-size: 11px;
+  }
+  .state-block:last-child { border-right: none; }
+  .state-num { font-size: 10px; font-weight: 500; color: var(--muted); display: block; margin-bottom: 3px; }
+  .state-name { font-size: 11px; font-weight: 500; }
+
+  /* ── Detail panel ── */
+  .detail-panel {
+    border: 0.5px solid var(--blue-mid);
+    border-radius: 12px;
+    padding: 16px 18px;
+    background: var(--blue-fill);
+    margin-bottom: 20px;
+    transition: all 0.2s;
+  }
+  .detail-title { font-size: 14px; font-weight: 500; color: var(--blue-dark); margin-bottom: 6px; }
+  .detail-body  { font-size: 12px; color: var(--blue-dark); line-height: 1.6; }
+  .detail-queues { margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .dq { font-size: 10px; font-family: 'DM Mono', monospace; padding: 2px 8px; border-radius: 4px; }
+  .dq-in  { background: var(--teal-fill);  color: var(--teal-dark);  border: 0.5px solid var(--teal-mid); }
+  .dq-out { background: var(--coral-fill); color: var(--coral-dark); border: 0.5px solid var(--coral-mid); }
+  .dq-fail{ background: var(--gray-fill);  color: var(--gray-dark);  border: 0.5px solid var(--gray-mid); }
+
+  /* ── Compensation panel ── */
+  .comp-panel {
+    border: 0.5px solid var(--coral-mid);
+    border-radius: 12px;
+    padding: 14px 18px;
+    background: var(--coral-fill);
+    margin-bottom: 20px;
+  }
+  .comp-title { font-size: 13px; font-weight: 500; color: var(--coral-dark); margin-bottom: 6px; }
+  .comp-row   { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 11px; color: var(--coral-dark); }
+  .comp-icon  { font-size: 12px; }
+
+  /* ── CQRS panel ── */
+  .cqrs-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;
+  }
+  .cqrs-card {
+    border: 0.5px solid var(--border); border-radius: 12px;
+    padding: 14px 14px 12px; background: var(--bg);
+  }
+  .cqrs-label { font-size: 10px; font-weight: 500; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 8px; display: block; }
+  .cqrs-item  { font-size: 11px; color: var(--text); padding: 4px 0; border-bottom: 0.5px solid var(--border); }
+  .cqrs-item:last-child { border-bottom: none; }
+
+  .section-label {
+    font-size: 10px; font-weight: 500; letter-spacing: 0.08em; color: var(--muted);
+    text-transform: uppercase; margin-bottom: 10px; margin-top: 4px; display: block;
+  }
+
+  @media (max-width: 500px) {
+    .cqrs-grid { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    .hero { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+
+<!-- HERO -->
+<div class="hero">
+  <div>
+    <div class="hero-title">Patrón SAGA — Procesos CAS</div>
+    <div class="hero-sub">Orquestación distribuida · 4 microservicios · 11 pasos · Autor: Percy G. Guillen Alcantara</div>
+  </div>
+  <div class="tech-pills">
+    <span class="pill pill-blue">Java / Spring Boot</span>
+    <span class="pill pill-amber">RabbitMQ</span>
+    <span class="pill pill-teal">MySQL</span>
+    <span class="pill pill-purple">MongoDB</span>
+    <span class="pill pill-coral">CQRS</span>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <span style="font-size:12px;font-weight:500;color:var(--text)">Simbología:</span>
+  <span class="legend-item"><span class="legend-dot" style="background:var(--blue-mid)"></span>Orquestador</span>
+  <span class="legend-item"><span class="legend-dot" style="background:var(--teal-mid)"></span>Servicio de negocio</span>
+  <span class="legend-item"><span class="legend-dot" style="background:var(--amber-mid)"></span>Cola RabbitMQ</span>
+  <span class="legend-item"><span class="legend-dot" style="background:var(--green-mid)"></span>Éxito</span>
+  <span class="legend-item"><span class="legend-dot" style="background:var(--coral-mid)"></span>Compensación</span>
+</div>
+
+<!-- SECTION: Flujo -->
+<span class="section-label">Flujo de la transacción distribuida — clic en cada paso para ver detalle</span>
+
+<!-- DETAIL PANEL -->
+<div class="detail-panel" id="detail-panel">
+  <div class="detail-title" id="detail-title">Selecciona un paso para ver su descripción</div>
+  <div class="detail-body" id="detail-body">Haz clic en cualquiera de los 11 pasos del flujo para ver qué hace cada microservicio, qué colas utiliza y cómo maneja los errores.</div>
+  <div class="detail-queues" id="detail-queues"></div>
+</div>
+
+<!-- PASO 1 -->
+<div class="flow-row">
+  <div class="step-card" onclick="showDetail(1)" id="s1">
+    <span class="step-num">PASO 01</span>
+    <div class="step-title">Cliente → Orquestador</div>
+    <div class="step-sub">POST /api/saga/proceso — genera sagaId UUID</div>
+    <span class="step-badge pill-blue">HTTP</span>
+  </div>
+</div>
+<div class="arrow-v">↓</div>
+
+<!-- PASO 2 -->
+<div class="flow-row">
+  <div class="step-card" onclick="showDetail(2)" id="s2">
+    <span class="step-num">PASO 02</span>
+    <div class="step-title">Orquestador → RabbitMQ</div>
+    <div class="step-sub">Encola evento · persiste comité en BD SAGA · estado: STARTED</div>
+    <span class="step-badge pill-amber">SAGA</span>
+  </div>
+</div>
+
+<div class="queue-row">
+  <span class="queue-label">Publica en:</span>
+  <span class="queue-name">proceso.create.queue</span>
+</div>
+
+<!-- PASO 3 -->
+<div class="flow-row">
+  <div class="step-card" onclick="showDetail(3)" id="s3">
+    <span class="step-num">PASO 03</span>
+    <div class="step-title">ms-proceso-service</div>
+    <div class="step-sub">Consume cola · registra proceso en MySQL tb_proceso</div>
+    <span class="step-badge pill-teal">MySQL</span>
+  </div>
+</div>
+<div class="arrow-v">↓</div>
+
+<!-- PASO 4 -->
+<div class="flow-row">
+  <div class="step-card" onclick="showDetail(4)" id="s4" style="border-left: 3px solid var(--green-mid)">
+    <span class="step-num">PASO 04 — Resultado</span>
+    <div class="step-title">Confirmación o fallo del registro</div>
+    <div class="step-sub">Éxito → proceso.created · Error → proceso.creation.failed</div>
+    <span class="step-badge pill-coral">DECISIÓN</span>
+  </div>
+</div>
+
+<div class="queue-row">
+  <span class="queue-label">Rutas:</span>
+  <span class="queue-name">proceso.created</span>
+  <span class="queue-arrow">·</span>
+  <span class="queue-name">proceso.creation.failed</span>
+</div>
+
+<!-- PASO 5 -->
+<div class="flow-row">
+  <div class="step-card" onclick="showDetail(5)" id="s5">
+    <span class="step-num">PASO 05</span>
+    <div class="step-title">Orquestador → Comité</div>
+    <div class="step-sub">Estado → PROCESO CREADO · recupera payload · dispara comité</div>
+    <span class="step-badge pill-blue">ORQUESTA</span>
+  </div>
+</div>
+<div class="arrow-v">↓</div>
+
+<!-- PASO 6 -->
+<div class="flow-row">
+  <div class="step-card" onclick="showDetail(6)" id="s6">
+    <span class="step-num">PASO 06</span>
+    <div class="step-title">ms-proceso-comite-service</div>
+    <div class="step-sub">Persistencia híbrida: MySQL + MongoDB (CQRS)</div>
+    <span class="step-badge pill-purple">MySQL + Mongo</span>
+  </div>
+</div>
+<div class="arrow-v">↓</div>
+
+<!-- PASO 7 -->
+<div class="flow-row">
+  <div class="step-card" onclick="showDetail(7)" id="s7" style="border-left: 3px solid var(--green-mid)">
+    <span class="step-num">PASO 07 — Resultado</span>
+    <div class="step-title">Confirmación o fallo del comité</div>
+    <div class="step-sub">Éxito → proceso.comite.created · Error → .creation.failed</div>
+    <span class="step-badge pill-coral">DECISIÓN</span>
+  </div>
+</div>
+
+<div class="queue-row">
+  <span class="queue-label">Rutas:</span>
+  <span class="queue-name">proceso.comite.created</span>
+  <span class="queue-arrow">·</span>
+  <span class="queue-name">proceso.comite.creation.failed</span>
+</div>
+
+<!-- PASO 8 -->
+<div class="flow-row">
+  <div class="step-card" onclick="showDetail(8)" id="s8">
+    <span class="step-num">PASO 08</span>
+    <div class="step-title">Orquestador → Notificaciones</div>
+    <div class="step-sub">Estado → COMITE CREADO · dispara notificación por email</div>
+    <span class="step-badge pill-blue">ORQUESTA</span>
+  </div>
+</div>
+<div class="arrow-v">↓</div>
+
+<!-- PASO 9 -->
+<div class="flow-row">
+  <div class="step-card" onclick="showDetail(9)" id="s9">
+    <span class="step-num">PASO 09</span>
+    <div class="step-title">ms-notification-service</div>
+    <div class="step-sub">Envía correo electrónico a cada integrante del comité</div>
+    <span class="step-badge pill-teal">EMAIL</span>
+  </div>
+</div>
+<div class="arrow-v">↓</div>
+
+<!-- PASO 10 -->
+<div class="flow-row">
+  <div class="step-card" onclick="showDetail(10)" id="s10" style="border-left: 3px solid var(--green-mid)">
+    <span class="step-num">PASO 10 — Resultado</span>
+    <div class="step-title">Confirmación o fallo de notificaciones</div>
+    <div class="step-sub">Éxito → proceso.comite.notificated · Error → .notification.failed</div>
+    <span class="step-badge pill-coral">DECISIÓN</span>
+  </div>
+</div>
+<div class="arrow-v">↓</div>
+
+<!-- PASO 11 -->
+<div class="flow-row">
+  <div class="step-card" onclick="showDetail(11)" id="s11" style="border-left: 3px solid var(--green-mid); background: var(--green-fill)">
+    <span class="step-num">PASO 11 — Fin</span>
+    <div class="step-title">Cierre de la transacción</div>
+    <div class="step-sub">Estado → COMITE NOTIFICADO → COMPLETADO ✓</div>
+    <span class="step-badge pill-teal">COMPLETADO</span>
+  </div>
+</div>
+
+<!-- ESTADOS -->
+<span class="section-label" style="margin-top:24px">Estados de la SAGA</span>
+<div class="states-row">
+  <div class="state-block" style="background:var(--gray-fill)">
+    <span class="state-num">S0</span>
+    <span class="state-name" style="color:var(--gray-dark)">STARTED</span>
+  </div>
+  <div class="state-block" style="background:var(--blue-fill)">
+    <span class="state-num">S1</span>
+    <span class="state-name" style="color:var(--blue-dark)">PROCESO<br>CREADO</span>
+  </div>
+  <div class="state-block" style="background:var(--teal-fill)">
+    <span class="state-num">S2</span>
+    <span class="state-name" style="color:var(--teal-dark)">COMITE<br>CREADO</span>
+  </div>
+  <div class="state-block" style="background:var(--purple-fill)">
+    <span class="state-num">S3</span>
+    <span class="state-name" style="color:var(--purple-dark)">COMITE<br>NOTIFICADO</span>
+  </div>
+  <div class="state-block" style="background:var(--green-fill)">
+    <span class="state-num">S4</span>
+    <span class="state-name" style="color:var(--green-dark)">COMPLETADO ✓</span>
+  </div>
+  <div class="state-block" style="background:var(--coral-fill)">
+    <span class="state-num">ERR</span>
+    <span class="state-name" style="color:var(--coral-dark)">FAILED →<br>COMPENSA</span>
+  </div>
+</div>
+
+<!-- SERVICIOS -->
+<span class="section-label">Microservicios del sistema</span>
+<div class="services-grid">
+  <div class="service-card">
+    <span class="service-icon">🧭</span>
+    <div class="service-name">ms-proceso-orquestador</div>
+    <div class="service-port">:8082</div>
+    <div class="service-dbs">
+      <span class="pill pill-blue">MySQL SAGA</span>
+    </div>
+  </div>
+  <div class="service-card">
+    <span class="service-icon">📋</span>
+    <div class="service-name">ms-proceso-service</div>
+    <div class="service-port">:8083</div>
+    <div class="service-dbs">
+      <span class="pill pill-teal">MySQL</span>
+    </div>
+  </div>
+  <div class="service-card">
+    <span class="service-icon">👥</span>
+    <div class="service-name">ms-proceso-comite-service</div>
+    <div class="service-port">:8084</div>
+    <div class="service-dbs">
+      <span class="pill pill-teal">MySQL</span>
+      <span class="pill pill-purple">MongoDB</span>
+    </div>
+  </div>
+  <div class="service-card">
+    <span class="service-icon">📧</span>
+    <div class="service-name">ms-notification-service</div>
+    <div class="service-port">:8085</div>
+    <div class="service-dbs">
+      <span class="pill pill-amber">SMTP</span>
+    </div>
+  </div>
+</div>
+
+<!-- CQRS -->
+<span class="section-label">CQRS — Separación Comando / Consulta</span>
+<div class="cqrs-grid">
+  <div class="cqrs-card">
+    <span class="cqrs-label">ESCRITURA (Command Side)</span>
+    <div class="cqrs-item">CreateProcesoCommand</div>
+    <div class="cqrs-item">ProcesoCommandHandler</div>
+    <div class="cqrs-item">MySQL tb_proceso</div>
+    <div class="cqrs-item">ProcesoCreatedEvent → RabbitMQ</div>
+  </div>
+  <div class="cqrs-card">
+    <span class="cqrs-label">LECTURA (Query Side)</span>
+    <div class="cqrs-item">ProcesoQueryService</div>
+    <div class="cqrs-item">MongoDB ProcesoComiteDocument</div>
+    <div class="cqrs-item">Alta velocidad · sin bloqueos</div>
+    <div class="cqrs-item">Sincronización asíncrona vía eventos</div>
+  </div>
+</div>
+
+<!-- COMPENSACIÓN -->
+<span class="section-label">Mecanismo de compensación</span>
+<div class="comp-panel">
+  <div class="comp-title">Si un paso falla → el orquestador revierte hacia atrás</div>
+  <div class="comp-row"><span class="comp-icon">↩</span> Fallo en registro MySQL → estado FAILED, sin pasos previos</div>
+  <div class="comp-row"><span class="comp-icon">↩</span> Fallo en comité → eliminar tb_proceso (compensar paso anterior)</div>
+  <div class="comp-row"><span class="comp-icon">↩</span> Fallo en notificación → eliminar comité (MySQL + MongoDB) + proceso</div>
+</div>
+
+<script>
+const steps = {
+  1: {
+    title: 'Paso 1 — Cliente inicia la SAGA',
+    body: 'El cliente (Postman / App) envía un HTTP POST al ms-proceso-orquestador en el puerto 8082. El payload incluye datos del proceso CAS, fechas, cantidades y la lista del comité de evaluación. El orquestador genera un sagaId único (UUID), persiste el comité en su BD de control y asigna estado STARTED.',
+    q: [{ t:'out', n:'proceso.create.queue' }]
+  },
+  2: {
+    title: 'Paso 2 — Encolado del evento en RabbitMQ',
+    body: 'El orquestador publica el CreateProcesoCommand en el exchange saga.exchange (Topic) con la routing key que dirige al queue proceso.create.queue. Simultáneamente guarda el payload del comité en la tabla saga_payload para uso posterior en pasos siguientes.',
+    q: [{ t:'out', n:'proceso.create.queue' }]
+  },
+  3: {
+    title: 'Paso 3 — ms-proceso-service registra en MySQL',
+    body: 'El ms-proceso-service está suscrito a proceso.create.queue. Al recibir el mensaje, deserializa el CreateProcesoCommand y ejecuta la inserción en MySQL (tabla tb_proceso) dentro de una transacción local. Spring Data JPA gestiona la persistencia.',
+    q: [{ t:'in', n:'proceso.create.queue' }, { t:'out', n:'proceso.created' }, { t:'fail', n:'proceso.creation.failed' }]
+  },
+  4: {
+    title: 'Paso 4 — Decisión: éxito o fallo del registro',
+    body: 'Tras el intento de persistencia, ms-proceso-service reporta el resultado publicando en RabbitMQ. Si la inserción en MySQL fue exitosa, publica ProcesoCreatedEvent en proceso.created. Si ocurrió alguna excepción, publica ProcesoCreationFailedEvent en proceso.creation.failed para activar la compensación.',
+    q: [{ t:'out', n:'proceso.created' }, { t:'fail', n:'proceso.creation.failed' }]
+  },
+  5: {
+    title: 'Paso 5 — Orquestador coordina creación del comité',
+    body: 'El orquestador consume proceso.created y actualiza el estado SAGA a PROCESO CREADO. Luego recupera el payload del comité desde su tabla saga_payload (guardada en el Paso 2) y publica un nuevo CreateProcesoComiteCommand en proceso.comite.create.queue para iniciar la siguiente fase.',
+    q: [{ t:'in', n:'proceso.created' }, { t:'out', n:'proceso.comite.create.queue' }]
+  },
+  6: {
+    title: 'Paso 6 — Persistencia híbrida: MySQL + MongoDB (CQRS)',
+    body: 'ms-proceso-comite-service consume proceso.comite.create.queue y ejecuta doble escritura: primero registra los miembros del comité en MySQL (tb_proceso_comite), luego persiste un ProcesoComiteDocument en MongoDB. Esta doble escritura implementa el patrón CQRS: MySQL para transacciones, MongoDB para consultas rápidas (modelo de lectura).',
+    q: [{ t:'in', n:'proceso.comite.create.queue' }, { t:'out', n:'proceso.comite.created' }, { t:'fail', n:'proceso.comite.creation.failed' }]
+  },
+  7: {
+    title: 'Paso 7 — Decisión: éxito o fallo del comité',
+    body: 'Tras la persistencia en MySQL y MongoDB, el servicio reporta el resultado. Éxito → ProcesoComiteCreatedEvent en proceso.comite.created. Error en cualquiera de las dos BDs → ProcesoComiteCreationFailedEvent en proceso.comite.creation.failed, lo que activa la compensación hacia atrás.',
+    q: [{ t:'out', n:'proceso.comite.created' }, { t:'fail', n:'proceso.comite.creation.failed' }]
+  },
+  8: {
+    title: 'Paso 8 — Orquestador activa notificaciones',
+    body: 'El orquestador consume proceso.comite.created y actualiza estado a COMITE CREADO. De inmediato genera la carga útil de notificación (con emails de los integrantes del comité) y la publica en proceso.comite.notification.queue para el microservicio de correo.',
+    q: [{ t:'in', n:'proceso.comite.created' }, { t:'out', n:'proceso.comite.notification.queue' }]
+  },
+  9: {
+    title: 'Paso 9 — ms-notification-service envía los correos',
+    body: 'ms-proceso-comite-notification-service monitorea de forma asíncrona proceso.comite.notification.queue. Al recibir el payload, extrae los emails de cada integrante del comité y utiliza JavaMailSender (Spring Mail) para enviar las notificaciones por SMTP.',
+    q: [{ t:'in', n:'proceso.comite.notification.queue' }, { t:'out', n:'proceso.comite.notificated' }, { t:'fail', n:'proceso.comite.notification.failed' }]
+  },
+  10: {
+    title: 'Paso 10 — Decisión: éxito o fallo de notificaciones',
+    body: 'Tras el envío de emails, el servicio de notificaciones reporta el resultado. Si los correos llegaron correctamente → proceso.comite.notificated. Si hubo bloqueos en el servidor SMTP u otro error → proceso.comite.notification.failed, activando la compensación.',
+    q: [{ t:'out', n:'proceso.comite.notificated' }, { t:'fail', n:'proceso.comite.notification.failed' }]
+  },
+  11: {
+    title: 'Paso 11 — Cierre exitoso de la transacción distribuida',
+    body: 'El orquestador consume proceso.comite.notificated. Actualiza secuencialmente el estado en la BD SAGA: primero a COMITE NOTIFICADO, luego a COMPLETADO. Con este último cambio en la base de datos, la transacción distribuida se da por finalizada exitosamente.',
+    q: [{ t:'in', n:'proceso.comite.notificated' }]
+  }
+};
+
+const colors = { out: 'dq-out', in: 'dq-in', fail: 'dq-fail' };
+const labels = { out: '↑ publica', in: '↓ consume', fail: '✕ error' };
+
+function showDetail(n) {
+  document.querySelectorAll('.step-card').forEach(c => c.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+  const d = steps[n];
+  document.getElementById('detail-title').textContent = d.title;
+  document.getElementById('detail-body').textContent = d.body;
+  const qDiv = document.getElementById('detail-queues');
+  qDiv.innerHTML = d.q.map(q =>
+    `<span class="dq ${colors[q.t]}">${labels[q.t]} ${q.n}</span>`
+  ).join('');
+}
+</script>

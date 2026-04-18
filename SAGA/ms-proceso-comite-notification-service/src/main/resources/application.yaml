@@ -24,7 +24,7 @@ spring:
     password: "A12345$"
 
   rabbitmq:
-    host: 192.168.18.39
+    host: 192.168.18.176
     port: 5672
     username: guest
     password: guest
@@ -40,7 +40,7 @@ spring:
       database: ms-reporte-procesos
       username: root
       password: example
-      host: 192.168.18.39
+      host: 192.168.18.176
       port: 27017
       authentication-database: admin
       auto-index-creation: true
